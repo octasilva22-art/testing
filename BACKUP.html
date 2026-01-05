@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Alumni</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #4a148c;
+    }
+
+    .profile-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin: 10px;
+      text-align: center;
+      width: 250px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .profile-card img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .profile-form {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 20px auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-form label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .profile-form input,
+    .profile-form textarea,
+    .profile-form button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .profile-form button {
+      background-color: #6a1b9a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .profile-form button:hover {
+      background-color: #4a148c;
+    }
+  </style>
+</head>
+<body>
+  <section id="alumni" role="tabpanel" aria-labelledby="tabAlumni" tabindex="0">
+    <h2>Data Profil Alumni</h2>
+    <div id="alumniProfiles" aria-live="polite" aria-label="Daftar profil alumni">
+      <!-- alumni profiles rendered here -->
+    </div>
+
+    <form id="profileForm" class="profile-form" aria-label="Form tambah profil alumni" novalidate>
+      <h3>Tambah Profil Alumni</h3>
+      <label for="alumniName">Nama Lengkap</label>
+      <input type="text" id="alumniName" required placeholder="Nama lengkap alumni" aria-required="true" />
+
+      <label for="alumniEmail">Email</label>
+      <input type="email" id="alumniEmail" required placeholder="Alamat email" aria-required="true" />
+
+      <label for="alumniPhone">Nomor Telepon</label>
+      <input type="tel" id="alumniPhone" required placeholder="Nomor telepon" aria-required="true" />
+
+      <label for="alumniPhoto">Upload Foto Profil (Opsional)</label>
+      <input type="file" id="alumniPhoto" accept="image/*" />
+
+      <label for="alumniNotes">Catatan / Deskripsi Singkat</label>
+      <textarea id="alumniNotes" rows="3" placeholder="Informasi tambahan"></textarea>
+
+      <button type="submit" aria-label="Tambah profil alumni">Tambah Profil</button>
+    </form>
+  </section>
+
+  <script>
+    const alumniProfilesDiv = document.getElementById('alumniProfiles');
+    const profileForm = document.getElementById('profileForm');
+    let alumniList = JSON.parse(localStorage.getItem('alumniProfiles') || '[]');
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderAlumni() {
+      alumniProfilesDiv.innerHTML = '';
+      if (alumniList.length === 0) {
+        alumniProfilesDiv.innerHTML = '<p style="color:#555; font-style: italic;">Belum ada data alumni. Silakan tambah profil baru.</p>';
+        return;
+      }
+
+      alumniList.forEach((alumni, idx) => {
+        const card = document.createElement('div');
+        card.className = 'profile-card';
+        card.innerHTML = `
+          <img src="${alumni.photo || 'https://i.pravatar.cc/120?u=' + encodeURIComponent(alumni.email)}" alt="Foto profil ${escapeHtml(alumni.name)}" />
+          <h3>${escapeHtml(alumni.name)}</h3>
+          <p><strong>Email:</strong> <a href="mailto:${escapeHtml(alumni.email)}">${escapeHtml(alumni.email)}</a></p>
+          <p><strong>Telepon:</strong> <a href="tel:${escapeHtml(alumni.phone)}">${escapeHtml(alumni.phone)}</a></p>
+          <p>${escapeHtml(alumni.notes || '')}</p>
+        `;
+        alumniProfilesDiv.appendChild(card);
+      });
+    }
+
+    profileForm.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const name = profileForm.alumniName.value.trim();
+      const email = profileForm.alumniEmail.value.trim();
+      const phone = profileForm.alumniPhone.value.trim();
+      const notes = profileForm.alumniNotes.value.trim();
+      const fileInput = document.getElementById('alumniPhoto');
+      const file = fileInput.files[0];
+
+      if (!name || !email || !phone) {
+        alert('Nama, Email, dan Nomor Telepon wajib diisi!');
+        return;
+      }
+
+      let photoBase64 = '';
+      if (file) {
+        try {
+          photoBase64 = await getBase64(file);
+        } catch (err) {
+          alert('Gagal membaca file gambar!');
+          return;
+        }
+      }
+
+      alumniList.push({ name, email, phone, photo: photoBase64, notes });
+      localStorage.setItem('alumniProfiles', JSON.stringify(alumniList));
+      profileForm.reset();
+      renderAlumni();
+      alert('Profil alumni berhasil ditambahkan!');
+    });
+
+    renderAlumni();
+  </script>
+</body>
+</html>
