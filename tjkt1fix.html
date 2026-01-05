@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Alumni Kelas XII TJKT 1 | Website Resmi</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+  :root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --accent-color: #f2994a;
+    --background-light: #7a9ada;
+    --text-dark: #ffffff;
+    --shadow-light: rgba(102, 102, 255, 0.15);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; 
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(-45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+    background-size: 600% 600%;
+    animation: gradientBG 15s ease infinite;
+    padding: 16px 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px var(--shadow-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  @keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* Navigation */
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(20, 5, 116);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    position: sticky;
+    top: 70px;
+    z-index: 90;
+    margin-bottom: 25px;
+    padding: 5px 0;
+  }
+  nav button {
+    all: unset;
+    margin: 6px 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 0 0 2px var(--text-dark);
+    transition:
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.2s ease;
+  }
+  nav button:hover:not(.active) {
+    color: rgb(255, 255, 255);
+    background: var(--primary-color);
+    box-shadow: 0 4px 12px var(--shadow-light);
+    transform: scale(1.05);
+  }
+  nav button.active {
+    background: var(--primary-color);
+    color: rgb(255, 255, 255);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    transform: scale(1.05);
+    cursor: default;
+  }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto 40px;
+    padding: 0 15px;
+    flex: 1;
+    width: 100%;
+  }
+
+  section {
+    display: none;
+    animation: fadeInUp 0.6s ease forwards;
+    height: 100%;
+  }
+  section.active {
+    display: block;
+  }
+  @keyframes fadeInUp {
+    0% {opacity: 0; transform: translateY(20px);}
+    100% {opacity:1; transform: translateY(0);}
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Home Section */
+  #heroSlideshow {
+    position: relative;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px var(--shadow-light);
+    margin-bottom: 25px;
+  }
+  #heroSlideshow img {
+    position: absolute;
+    top: 0; left:0; width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: slideFade 16s infinite;
+    border-radius: 12px;
+  }
+  #heroSlideshow img:nth-child(1) { animation-delay: 0s;}
+  #heroSlideshow img:nth-child(2) { animation-delay: 5.4s;}
+  #heroSlideshow img:nth-child(3) { animation-delay: 10.8s;}
+  @keyframes slideFade {
+    0% {opacity: 0;}
+    8% {opacity: 1;}
+    33% {opacity: 1;}
+    41% {opacity: 0;}
+    100% {opacity: 0;}
+  }
+
+    #videoGalleryTitle {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .video-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  .video-gallery iframe {
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow-light);
+    width: 100%;
+    height: 200px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  .video-gallery iframe:hover {
+    transform: scale(1.03) translateY(-4px);
+  }
+
+  .forlogin {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Alumni Profiles */
+  #alumniProfiles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .profile-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+    max-width: 280px;
+    position: relative;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .profile-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .profile-card img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+
+  .profile-card h3 {
+    margin: 8px 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+  }
+
+  .profile-card p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  /* Gallery */
+  #galleryContent {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+    gap: 12px;
+  }
+  .gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px var(--shadow-light);
+    cursor: pointer;
+    background: white;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gallery-item:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(106,17,203,0.3);
+  }
+  .gallery-item img,
+  .gallery-item video {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+  }
+
+  /* Chat Containers */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 300px);
+    min-height: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    background: white;
+    margin-bottom: 20px;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message {
+    color: #ffffff;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .received {
+    align-self: flex-start;
+    background: rgb(7, 0, 136);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .sent {
+    align-self: flex-end;
+    background: rgb(7, 0, 136);
+    color: white;
+  }
+
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+  }
+
+  .message-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+  }
+
+  .message-action {
+    font-size: 0.7rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .reply-indicator {
+    font-size: 0.7rem;
+    padding: 5px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+
+  .reply-preview {
+    background: rgba(30, 18, 71, 0.711);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    border-left: 3px solid white;
+  }
+
+  .private-chat {
+    border: 2px solid var(--accent-color);
+    margin-top: 20px;
+  }
+
+  .chat-controls {
+    display: flex;
+    padding: 10px;
+    background: #dbe5ff;
+    gap: 10px;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+
+  .chat-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+  }
+
+  .reply-container {
+    display: flex;
+    align-items: center;
+    background: #f0f4ff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+  }
+
+  .reply-content {
+    flex: 1;
+    font-size: 0.8rem;
+    color: #333;
+  }
+
+  .cancel-reply {
+    color: #ff0000;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  
+  /* Back Link styles */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 25px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: background 0.3s ease, transform 0.2s ease;
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    text-decoration: none;
+    user-select: none;
+  }
+  .back-link:hover {
+    background: #ffcc33;
+    color: #3a2973;
+    transform: translateX(-5px);
+  }
+  .back-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+
+  /* Selected User Indicator */
+  .selected-user {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+    .job {
+      margin-bottom: 30px;
+      background: rgba(255 255 255 / 0.15);
+      padding: 20px 25px;
+      border-radius: 18px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      transition: background 0.3s ease;
+    }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #alumniProfiles {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chat-container {
+      height: calc(100vh - 250px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    #alumniProfiles {
+      grid-template-columns: 1fr;
+    }
+    
+    nav button {
+      padding: 8px 10px;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link" aria-label="Go back to homepage">
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <path d="M12 15L7 10L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+<header>
+  ALUMNI TJKT 1
+</header>
+
+<nav>
+  <button id="tabHome" class="active">Home</button>
+  <button id="tabAlumni">Alumni</button>
+  <button id="tabGallery">Galeri</button>
+</nav>
+
+<main>
+  <!-- Home Section -->
+  <section id="home" class="active">
+    <h2>Selamat Datang</h2>
+    <div id="heroSlideshow">
+      <img src="tjkt0.jpg" alt="Foto alumni">
+      <img src="tjkt11.jpg" alt="Foto alumni">
+      <img src="tjkt111.jpg" alt="Foto alumni">
+    </div>
+
+    <div class="job" tabindex="0">
+      <h3>Deskripsi Kelas XII TJKT 1</h3>
+      <p>
+        Kelas XII TJKT 1 adalah kelas yang terdiri dari siswa-siswa yang memiliki minat dan bakat di bidang Teknologi dan Jaringan Komputer. 
+        Kami berkomitmen untuk memberikan pendidikan yang berkualitas dan mempersiapkan siswa untuk menghadapi tantangan di dunia kerja.
+      </p>
+  
+      <h3>Tujuan Kelas</h3>
+      <ul>
+        <li>Mempersiapkan siswa untuk ujian nasional dan ujian kompetensi keahlian.</li>
+        <li>Memberikan pengetahuan dan keterampilan di bidang teknologi informasi dan komunikasi.</li>
+        <li>Mendorong siswa untuk berinovasi dan berkreasi dalam proyek-proyek teknologi.</li>
+      </ul>
+      
+      <h3>Kegiatan Kelas</h3>
+      <p>
+        Selama tahun ajaran ini, kami telah melaksanakan berbagai kegiatan, antara lain:
+      </p>
+      <ul>
+        <li>Workshop tentang pemrograman dan pengembangan aplikasi.</li>
+        <li>Pelatihan jaringan komputer dan keamanan siber.</li>
+        <li>Studi banding ke perusahaan teknologi terkemuka.</li>
+        <li>Partisipasi dalam kompetisi teknologi tingkat nasional.</li>
+      </ul>
+    </div>
+
+    <div class="video-gallery" aria-label="Video reuni dan kegiatan">
+      <iframe src="https://www.youtube.com/embed/4H3SWyrdxWU?si=zBEXgsq7XOpdDdVk" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/eV85xTer9Hw?si=leundSg9ea3uOEph" title="Video kegiatan 1" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- Alumni Section -->
+  <section id="alumni">
+    <h2>Data Alumni</h2>
+    <div id="alumniProfiles">
+      <!-- Data alumni manual -->
+      <a href="" class="profile-card">
+        <h3>Bili Okan R.</h3>
+        <p><strong>Motto : </strong>Loong time loong see</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Mohammad F. A.</h3>
+        <p><strong>Motto : </strong>Belive in yourself</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Ma'Rifatus S.</h3>
+        <p><strong>Motto : </strong>Aku akan menjadi kuat dengan caraku sendiri</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Naela Mery S.</h3>
+        <p><strong>Motto : </strong>Pirvat</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Damar S.R.</h3>
+        <p><strong>Motto : </strong>Kalau orang lain bisa insyaallah saya juga bisa</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Azahra Giya A.</h3>
+        <p><strong>Motto : </strong>Never gice up</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Bela Safitri</h3>
+        <p><strong>Motto : </strong>Milikilah pundah yang kuat agar tetap kokoh berdiri, untuk orang-orang yang kamu sayangi</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Tri Sara R.</h3>
+        <p><strong>Motto : </strong>Jika kamu mencari orang lain untuk merubah dirimu lihatlah ke cermin maka kamu akan melihatnnya</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Elsa Avrelia</h3>
+        <p><strong>Motto : </strong>Nihil est impossible, si tunc est possibilis</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Jihan Lestari</h3>
+        <p><strong>Motto : </strong>Hiduplah dengan rasa syukur</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Dinda Meli A.</h3>
+        <p><strong>Motto : </strong>Setiap langkah kecil menuju impian adalah investasi menuju masa depan</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Aji Mustofa</h3>
+        <p><strong>Motto : </strong>Hiudp hanya sekali maka nikmatilah, matipun hanya sekali maka persiapkanlah</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Galih Dwi C.</h3>
+        <p><strong>Motto : </strong>Yaudah jalanin aja</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Nasirul A.</h3>
+        <p><strong>Motto : </strong>Dimana ada air disitu ada ikan</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Ridho Zaqi M.</h3>
+        <p><strong>Motto : </strong>Perbaiki sholatmu allah jamin keberhasilan hidupmu</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Sukra Jenar</h3>
+        <p><strong>Motto : </strong>Jadilah hinaan jadi motivasi</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Muhammad T.</h3>
+        <p><strong>Motto : </strong>Satu-satunya kebijakan sejati adalah mengetahui bahwa anda tidak tahu apa-apa</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Levino Fabyan N.</h3>
+        <p><strong>Motto : </strong>Tidak ada</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Meris Saputra</h3>
+        <p><strong>Motto : </strong>Janganlah menyerah karena menyerah tidak akan membuahkan hasil</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Novando Tegar P.</h3>
+        <p><strong>Motto : </strong>Setiap kesulitan pasti ada kemudahan</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Muhammad Farkhan</h3>
+        <p><strong>Motto : </strong>Tidak ada</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Anggiawan</h3>
+        <p><strong>Motto : </strong>Dimana ada kemauan disitu ada jalan</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Deri Adi P.</h3>
+        <p><strong>Motto : </strong>I was born like this, perform like this</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Reza F.</h3>
+        <p><strong>Motto : </strong> Jangan mengharapkan hasilnya, tapi nikmati juga prosesnya</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Dedes Ghias F.</h3>
+        <p><strong>Motto : </strong>Ubur-ubur ikan lele</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Jefri Saputra</h3>
+        <p><strong>Motto : </strong>Terlihat biasa namun tidak biasa</p>
+      </a>
+      <a href="" class="profile-card">
+        <h3>Wisnu W.</h3>
+        <p><strong>Motto : </strong>Jadilah dirimu sendiri tanpa meniru orang lain</p>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <h2>Galeri Foto</h2>
+    <div id="galleryContent">
+    </div>
+  </section>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQZvbw9bzQg5sbAiEpjTQ0hEYrsyPeP7M",
+    authDomain: "alumi-tjkt2.firebaseapp.com",
+    databaseURL: "https://alumi-tjkt2-default-rtdb.firebaseio.com",
+    projectId: "alumi-tjkt2",
+    storageBucket: "alumi-tjkt2.firebasestorage.app",
+    messagingSenderId: "244074902718",
+    appId: "1:244074902718:web:d3749cc7797eefc5849aef",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // Initialize the app immediately since we don't need login
+  loadApp();
+
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      sendPublicMessage();
+    }
+  }
+
+  function deleteMessage(messageId) {
+    if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
+      database.ref('publicMessages/' + messageId).remove();
+    }
+  }
+
+  function setupReply(messageId, senderName, message) {
+    replyingTo = {
+      messageId: messageId,
+      senderName: senderName,
+      message: message
+    };
+    
+    document.getElementById('replyPreview').style.display = 'flex';
+    document.getElementById('replyText').textContent = message;
+    document.getElementById('publicMessage').focus();
+  }
+
+  function cancelReply() {
+    replyingTo = null;
+    document.getElementById('replyPreview').style.display = 'none';
+  }
+
+  // UI Functions
+  function loadApp() {
+    // Set up navigation
+    document.querySelectorAll('nav button').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(btn.id.replace('tab', '').toLowerCase()).classList.add('active');
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      };
+    });
+
+    // Load Public Chat
+    database.ref('publicMessages').on('child_added', snapshot => {
+      const msg = snapshot.val();
+      displayMessage(msg, snapshot.key, 'publicChat');
+    });
+
+    database.ref('publicMessages').on('child_removed', snapshot => {
+      const messageElement = document.getElementById(`message-${snapshot.key}`);
+      if (messageElement) {
+        messageElement.remove();
+      }
+    });
+  }
+
+  function displayMessage(msg, messageId, containerId) {
+    const container = document.getElementById(containerId);
+    const isSender = msg.senderId === currentUser.id;
+    
+    // Check if message already exists
+    if (document.getElementById(`message-${messageId}`)) {
+      return;
+    }
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isSender ? 'sent' : 'received'}`;
+    messageDiv.id = `message-${messageId}`;
+    
+    let replyContent = '';
+    if (msg.replyTo) {
+      replyContent = `
+        <div class="reply-preview">
+            ${msg.replyToName} : ${msg.replyToMessage}
+        </div>
+      `;
+    }
+    
+    let deleteButton = '';
+    if (isSender || currentUser.role === 'admin') {
+      deleteButton = `<span class="message-action" onclick="deleteMessage('${messageId}')">Hapus</span>`;
+    }
+    
+    messageDiv.innerHTML = `
+      <div class="message-header">
+        <span>${msg.senderName}</span>
+        <span>${new Date(msg.timestamp).toLocaleTimeString()}</span>
+      </div>
+      ${replyContent}
+      <div>${msg.message}</div>
+      <div class="message-actions">
+        <span class="message-action" onclick="setupReply('${messageId}', '${msg.senderName}', '${msg.message}')">Balas</span>
+        ${deleteButton}
+      </div>
+    `;
+    
+    container.appendChild(messageDiv);
+    container.scrollTop = container.scrollHeight;
+  }
+</script>
+</body>
+</html>

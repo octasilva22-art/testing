@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Alumni Kelas XII TJKT 2 | Website Resmi</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+  :root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --accent-color: #f2994a;
+    --background-light: #7a9ada;
+    --text-dark: #ffffff;
+    --shadow-light: rgba(102, 102, 255, 0.15);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; 
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(-45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+    background-size: 600% 600%;
+    animation: gradientBG 15s ease infinite;
+    padding: 16px 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px var(--shadow-light);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  @keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* Navigation */
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgb(20, 5, 116);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    position: sticky;
+    top: 70px;
+    z-index: 90;
+    margin-bottom: 25px;
+    padding: 5px 0;
+  }
+  nav button {
+    all: unset;
+    margin: 6px 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 0 0 2px var(--text-dark);
+    transition:
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.2s ease;
+  }
+  nav button:hover:not(.active) {
+    color: rgb(255, 255, 255);
+    background: var(--primary-color);
+    box-shadow: 0 4px 12px var(--shadow-light);
+    transform: scale(1.05);
+  }
+  nav button.active {
+    background: var(--primary-color);
+    color: rgb(255, 255, 255);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    transform: scale(1.05);
+    cursor: default;
+  }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto 40px;
+    padding: 0 15px;
+    flex: 1;
+    width: 100%;
+  }
+
+  section {
+    display: none;
+    animation: fadeInUp 0.6s ease forwards;
+    height: 100%;
+  }
+  section.active {
+    display: block;
+  }
+  @keyframes fadeInUp {
+    0% {opacity: 0; transform: translateY(20px);}
+    100% {opacity:1; transform: translateY(0);}
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Chat Containers */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 300px);
+    min-height: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    background: white;
+    margin-bottom: 20px;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message {
+    color: #ffffff;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .received {
+    align-self: flex-start;
+    background: rgb(7, 0, 136);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .sent {
+    align-self: flex-end;
+    background: rgb(7, 0, 136);
+    color: white;
+  }
+
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+  }
+
+  .message-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+  }
+
+  .message-action {
+    font-size: 0.7rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .reply-indicator {
+    font-size: 0.7rem;
+    padding: 5px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+
+  .reply-preview {
+    background: rgba(30, 18, 71, 0.711);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    border-left: 3px solid white;
+  }
+
+  .chat-controls {
+    display: flex;
+    padding: 10px;
+    background: #dbe5ff;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+
+  .chat-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .class-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .class-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .class-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+    .class-info {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .class-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  .class-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+  }
+
+  .class-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+
+  .class-button:hover {
+    background: var(--secondary-color);
+  }
+
+  .latin {
+      font-family: 'Dancing Script', cursive;
+  }
+
+  .reply-container {
+    display: flex;
+    align-items: center;
+    background: #f0f4ff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+  }
+
+  .reply-content {
+    flex: 1;
+    font-size: 0.8rem;
+    color: #333;
+  }
+
+  .cancel-reply {
+    color: #ff0000;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+  }
+
+  /* Login Form */
+  .login-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    font-size: 1rem;
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .remember-me {
+    color: #000000;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .remember-me input {
+    margin-right: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .chat-container {
+      height: calc(100vh - 250px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    nav button {
+      padding: 8px 10px;
+      font-size: 0.8rem;
+    }
+    
+    .message {
+      max-width: 85%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  WELCOME ANGKATAN X
+</header>
+
+<nav>
+  <button id="tabHome">Home</button>
+  <button id="tabForum">Chat</button>
+  <button id="tabLogout" style="display: none;">Logout</button>
+</nav>
+
+<main>
+  <!-- Login Section -->
+  <section id="login" class="active">
+    <div class="login-form">
+      <h2 class="forlogin">Login Alumni</h2>
+      <input type="email" id="loginEmail" class="login-input" placeholder="Email">
+      <input type="password" id="loginPassword" class="login-input" placeholder="Password">
+      <div class="remember-me">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Ingat saya</label>
+      </div>
+      <button class="login-button" onclick="loginUser()">Masuk</button>
+      <p style="text-align: center; margin-top: 10px;">
+        Belum punya akun? <a href="#" onclick="showRegister()">Daftar disini</a>
+      </p>
+    </div>
+
+    <div class="login-form" id="registerForm" style="display: none;">
+      <h2>Registrasi Alumni</h2>
+      <input type="text" id="regName" class="login-input" placeholder="Nama Lengkap">
+      <input type="email" id="regEmail" class="login-input" placeholder="Email">
+      <input type="password" id="regPassword" class="login-input" placeholder="Password">
+      <button class="login-button" onclick="registerUser()">Daftar</button>
+      <p style="text-align: center; margin-top: 10px;">
+        Sudah punya akun? <a href="#" onclick="showLogin()">Login disini</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Home Section -->
+  <section id="home">
+    <h2>SELAMAT DATANG</h2>
+    <div style="background: rgba(255 255 255 / 0.15); padding: 20px 25px; border-radius: 18px; margin-bottom: 20px;">
+      <h3>Assalamuallaikum Warahmatullahi Wabarokatuh</h3>
+      <p>
+        Alhamdulillah puji syukur kehadirat Allah SWT atas Rahmat dan karunian-nya sehingga anak-anaku siswa kelas XII dapat menyelesaikan proses belajar. Kurang lebih tiga tahun ananda deitempa dengan beragam pengetahuan SMK Diponegoro Cipari. Dengan harapan tidak hanya wawasan yang bertambah luas namun akhlak yang semakin baik menjadi harapan kami sebagai pendamping belajar ananda sekalian selama sekolah. Tentunya akan menjadi sebuah jariyah bagi kami apabila ananda sungguh-sungguh mengimplementasikan apa yang sudah diajarkan selama sekolah.
+        Dalam perjalanan hidup ini tentunya kita tidak akan selamanya menjumpai hal-hal yang selalu menyenangkan, akan ada masanya kita terlibat pada problematika pelik dimana rasa pahit dan kekecewaan datang menyapa. Tapi Ketahuilah bahwa dengan melewatinya maka ananda sekalian sedang melewati proses pendewasaan secara perlahan. Jika kita mengarahkan seluruh usaha, tetap total dan sabar melewati segala suka duka selama mengenyam pendidikan di SMK Diponegoro Cipari maka hasilnya akan ananda tuai di masa mendatang. Tentunya semua hal yang telah terjadi, entah itu menggembirakan, mengharukan atau bahkan menegangkan, kelak akan menjadi sebuah kenangan manis ketika ananda mengingatkan.
+        Pintu sekolah ini akan selalu terbuka untuk ananda sekalian yang selama ini dengan penuh totalitas menjaga nama baik dan belajar segiat mungkin mengejar cita-cita dan harapan masa kecil. Langkahkan kaki ananda dengan penuh semangat menyongsong hari esok, tetap menjaga iman, akhlak yang baik dan perluas wawasan ananda lebih dalam supaya siap menghadapi era baru nantinya.
+        Do'a kami senantiasa menyertai kalian semua di manapun kalian berada
+      </p>
+      <h3>Wassalamuallaikum Warahmatullahi Wabarakatuh</h3>
+      
+    <div class="class-gallery">
+      <!-- Kelas TJKT 1 -->
+      <div class="class-card">
+        <img src="paraguru.jpg" alt="Kelas TJKT 2" class="class-image">
+        <div class="class-info">
+          <h3 class="class-name">Anggota Guru</h3>
+          <p class="class-description">SMK DIPONEGORO CIPARI</p>
+          <a href="" class="class-button" target="_blank">Kunjungi</a>
+        </div>
+      </div>
+      
+      <!-- Kelas TJKT 2 -->
+      <div class="class-card">
+        <img src="tjkt0.jpg" alt="Kelas TJKT 1" class="class-image">
+        <div class="class-info">
+          <h3 class="class-name">Kelas TJKT 1</h3>
+          <p class="class-description">Angkatan 2022-2025 dengan 11 siswa kreatif</p>
+          <a href="tjkt1fix.html" class="class-button" target="_blank">Kunjungi</a>
+        </div>
+      </div>
+      
+      <!-- Kelas TJKT 3 -->
+      <div class="class-card">
+        <img src="Akutansi0.jpg" alt="Akutansi" class="class-image">
+        <div class="class-info">
+          <h3 class="class-name">Akutansi</h3>
+          <p class="class-description">Angkatan 2022-2025 dengan 30 siswa inovatif</p>
+          <a href="akutansifix.html" class="class-button" target="_blank">Kunjungi</a>
+        </div>
+      </div>
+
+      <!-- Kelas TJKT 1 -->
+      <div class="class-card">
+        <img src="TJKT2.jpg" alt="Kelas TJKT 2" class="class-image">
+        <div class="class-info">
+          <h3 class="class-name">Kelas TJKT 2</h3>
+          <p class="class-description">Angkatan 2022-2025 dengan 31 siswa berprestasi</p>
+          <a href="tjkt2.html" class="class-button" target="_blank">Kunjungi</a>
+        </div>
+      </div>      
+    </div>
+    </div>
+    
+  </section>
+
+  <!-- Forum Section -->
+  <section id="forum">
+    <h2>Chat Group</h2>
+    <div class="chat-container">
+      <div class="chat-messages" id="publicChat"></div>
+      <div id="replyPreview" style="display: none;" class="reply-container">
+        <div class="reply-content">Membalas: <span id="replyText"></span></div>
+        <div class="cancel-reply" onclick="cancelReply()">✕</div>
+      </div>
+      <div class="chat-controls">
+        <input type="text" id="publicMessage" class="chat-input" placeholder="Tulis pesan..." onkeypress="handleKeyPress(event)">
+        <button class="chat-button" onclick="sendPublicMessage()">Kirim</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBJx7SW_gwv0B2tEyTHxGlcAhY2xmuvJ_o",
+    authDomain: "chatalumnitjkt2.firebaseapp.com",
+    databaseURL: "https://chatalumnitjkt2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "chatalumnitjkt2",
+    storageBucket: "chatalumnitjkt2.appspot.com",
+    messagingSenderId: "356385118945",
+    appId: "1:356385118945:web:9800bcf8774479fb68b5a0"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+  let currentUser = null;
+  let replyingTo = null;
+
+  // Check for remembered login
+  window.onload = function() {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    const rememberedPassword = localStorage.getItem('rememberedPassword');
+    
+    if (rememberedEmail && rememberedPassword) {
+      document.getElementById('loginEmail').value = rememberedEmail;
+      document.getElementById('loginPassword').value = rememberedPassword;
+      document.getElementById('rememberMe').checked = true;
+    }
+  };
+
+  // Authentication
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+    
+    if (!email || !password) {
+      alert('Email dan password harus diisi!');
+      return;
+    }
+    
+    database.ref('users').orderByChild('email').equalTo(email).once('value', snapshot => {
+      const users = snapshot.val();
+      if (users) {
+        const userId = Object.keys(users)[0];
+        const user = users[userId];
+        if (user.password === password) {
+          currentUser = { id: userId, ...user };
+          
+          // Remember user if checkbox is checked
+          if (rememberMe) {
+            localStorage.setItem('rememberedEmail', email);
+            localStorage.setItem('rememberedPassword', password);
+          } else {
+            localStorage.removeItem('rememberedEmail');
+            localStorage.removeItem('rememberedPassword');
+          }
+          
+          loadApp();
+        } else {
+          alert('Password salah!');
+        }
+      } else {
+        alert('Email tidak terdaftar!');
+      }
+    });
+  }
+
+  function registerUser() {
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    
+    if (!name || !email || !password) {
+      alert('Semua field harus diisi!');
+      return;
+    }
+
+    const newUser = {
+      name: name,
+      email: email,
+      password: password,
+      createdAt: Date.now()
+    };
+
+    database.ref('users').push(newUser, error => {
+      if (!error) {
+        alert('Registrasi berhasil! Silakan login.');
+        showLogin();
+      } else {
+        alert('Terjadi kesalahan saat registrasi. Silakan coba lagi.');
+      }
+    });
+  }
+
+  function showRegister() {
+    document.getElementById('registerForm').style.display = 'block';
+    document.querySelector('#login .login-form').style.display = 'none';
+  }
+
+  function showLogin() {
+    document.getElementById('registerForm').style.display = 'none';
+    document.querySelector('#login .login-form').style.display = 'block';
+  }
+
+  // Chat Functionality
+  function sendPublicMessage() {
+    if (!currentUser) {
+      alert('Anda harus login terlebih dahulu!');
+      return;
+    }
+    
+    const message = document.getElementById('publicMessage').value;
+    if (message.trim() === '') return;
+
+    const messageData = {
+      senderId: currentUser.id,
+      senderName: currentUser.name,
+      message: message,
+      timestamp: Date.now()
+    };
+
+    // Add reply reference if replying to a message
+    if (replyingTo) {
+      messageData.replyTo = replyingTo.messageId;
+      messageData.replyToName = replyingTo.senderName;
+      messageData.replyToMessage = replyingTo.message;
+    }
+
+    database.ref('publicMessages').push(messageData);
+
+    document.getElementById('publicMessage').value = '';
+    cancelReply();
+  }
+
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      sendPublicMessage();
+    }
+  }
+
+  function deleteMessage(messageId) {
+    if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
+      database.ref('publicMessages/' + messageId).remove();
+    }
+  }
+
+  function setupReply(messageId, senderName, message) {
+    replyingTo = {
+      messageId: messageId,
+      senderName: senderName,
+      message: message
+    };
+    
+    document.getElementById('replyPreview').style.display = 'flex';
+    document.getElementById('replyText').textContent = message;
+    document.getElementById('publicMessage').focus();
+  }
+
+  function cancelReply() {
+    replyingTo = null;
+    document.getElementById('replyPreview').style.display = 'none';
+  }
+
+  // UI Functions
+  function loadApp() {
+    document.getElementById('login').classList.remove('active');
+    document.getElementById('home').classList.add('active');
+    document.getElementById('tabLogout').style.display = 'block';
+    
+    // Load Public Chat
+    database.ref('publicMessages').orderByChild('timestamp').on('child_added', snapshot => {
+      const msg = snapshot.val();
+      displayMessage(msg, snapshot.key, 'publicChat');
+    });
+
+    database.ref('publicMessages').on('child_removed', snapshot => {
+      const messageElement = document.getElementById(`message-${snapshot.key}`);
+      if (messageElement) {
+        messageElement.remove();
+      }
+    });
+
+    // Navigation
+    document.querySelectorAll('nav button').forEach(btn => {
+      if (btn.id !== 'tabLogout') {
+        btn.onclick = () => {
+          document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+          document.getElementById(btn.id.replace('tab', '').toLowerCase()).classList.add('active');
+        };
+      }
+    });
+
+    document.getElementById('tabLogout').onclick = () => {
+      currentUser = null;
+      localStorage.removeItem('rememberedEmail');
+      localStorage.removeItem('rememberedPassword');
+      location.reload();
+    };
+  }
+
+  function displayMessage(msg, messageId, containerId) {
+    const container = document.getElementById(containerId);
+    const isSender = msg.senderId === currentUser.id;
+    
+    // Check if message already exists
+    if (document.getElementById(`message-${messageId}`)) {
+      return;
+    }
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isSender ? 'sent' : 'received'}`;
+    messageDiv.id = `message-${messageId}`;
+    
+    let replyContent = '';
+    if (msg.replyTo) {
+      replyContent = `
+        <div class="reply-preview">
+            ${msg.replyToName} : ${msg.replyToMessage}
+        </div>
+      `;
+    }
+    
+    let deleteButton = '';
+    if (isSender || (currentUser && currentUser.role === 'admin')) {
+      deleteButton = `<span class="message-action" onclick="deleteMessage('${messageId}')">Hapus</span>`;
+    }
+    
+    messageDiv.innerHTML = `
+      <div class="message-header">
+        <span>${msg.senderName}</span>
+        <span>${formatTime(msg.timestamp)}</span>
+      </div>
+      ${replyContent}
+      <div>${msg.message}</div>
+      <div class="message-actions">
+        <span class="message-action" onclick="setupReply('${messageId}', '${msg.senderName}', '${msg.message}')">Balas</span>
+        ${deleteButton}
+      </div>
+    `;
+    
+    container.appendChild(messageDiv);
+    
+    // Auto scroll to bottom
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Initial Setup
+  database.ref('users').once('value', snapshot => {
+    if (!snapshot.exists()) {
+      // Create initial admin user
+      database.ref('users').push({
+        name: 'Admin',
+        email: 'admin@example.com',
+        password: 'admin123',
+        role: 'admin'
+      });
+    }
+  });
+</script>
+</body>
+</html>
