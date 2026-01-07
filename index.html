@@ -28,17 +28,24 @@
                 <i class="fas fa-users"></i>
                 <span>Kelas</span>
             </button>
-            <button class="nav-btn" data-page="login">
+            <div class="nav-dropdown" id="user-menu" style="display:none;">
+                <button class="nav-btn dropdown-toggle">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <button class="nav-btn" data-page="forum">
+                        <i class="fas fa-comments"></i>
+                        <span>Forum</span>
+                    </button>
+                    <button class="nav-btn" data-page="logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+            <button class="nav-btn" id="login-nav" data-page="login">
                 <i class="fas fa-sign-in-alt"></i>
                 <span>Login</span>
-            </button>
-            <button class="nav-btn" data-page="forum" id="forum-nav" style="display:none;">
-                <i class="fas fa-comments"></i>
-                <span>Forum</span>
-            </button>
-            <button class="nav-btn" data-page="logout" id="logout-nav" style="display:none;">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
             </button>
         </div>
     </nav>
@@ -72,7 +79,114 @@
                 </div>
             </div>
 
-            <!-- KELAS -->
+            <!-- INFO SEKOLAH -->
+            <div class="school-info-section">
+                <h2><i class="fas fa-school"></i> Tentang Sekolah</h2>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-history"></i>
+                        <h3>Sejarah</h3>
+                        <p>SMK Diponegoro Cipari berdiri sejak 1985 dengan visi mencetak lulusan yang kompeten dan berkarakter.</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Prestasi</h3>
+                        <p>Juara Lomba Kompetensi Siswa tingkat provinsi dan nasional bidang IT dan Akuntansi.</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Fasilitas</h3>
+                        <p>Laboratorium komputer lengkap, perpustakaan digital, dan ruang praktik akuntansi modern.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENT SEKARANG -->
+            <div class="events-section">
+                <h2><i class="fas fa-calendar-alt"></i> Kegiatan Terbaru</h2>
+                <div class="event-cards">
+                    <div class="event-card">
+                        <div class="event-date">
+                            <span class="day">25</span>
+                            <span class="month">Des</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>Wisuda Angkatan XII</h3>
+                            <p><i class="fas fa-clock"></i> 08:00 - Selesai</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Aula Sekolah</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date">
+                            <span class="day">15</span>
+                            <span class="month">Jan</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>Reuni Alumni</h3>
+                            <p><i class="fas fa-clock"></i> 10:00 - 15:00</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Gedung Serbaguna</p>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date">
+                            <span class="day">20</span>
+                            <span class="month">Jan</span>
+                        </div>
+                        <div class="event-info">
+                            <h3>Workshop Kewirausahaan</h3>
+                            <p><i class="fas fa-clock"></i> 13:00 - 16:00</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Lab. Komputer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KELAS PREVIEW -->
+            <div class="classes-preview">
+                <h2><i class="fas fa-users"></i> Kelas Alumni</h2>
+                <div class="classes-container" id="classes-preview">
+                    <!-- Kelas akan dimuat via JavaScript -->
+                </div>
+            </div>
+
+            <!-- KONTAK -->
+            <div class="contact-section">
+                <h2><i class="fas fa-address-book"></i> Hubungi Kami</h2>
+                <div class="contact-cards">
+                    <a href="https://instagram.com/smkdiponegorocipari" class="contact-card" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                        <span>@smkdiponegorocipari</span>
+                    </a>
+                    <a href="mailto:info@smkdiponegorocipari.sch.id" class="contact-card">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@smkdiponegorocipari.sch.id</span>
+                    </a>
+                    <a href="https://tiktok.com/@smkdiponegoro" class="contact-card" target="_blank">
+                        <i class="fab fa-tiktok"></i>
+                        <span>@smkdiponegoro</span>
+                    </a>
+                    <a href="https://facebook.com/smkdiponegorocipari" class="contact-card" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                        <span>SMK Diponegoro Cipari</span>
+                    </a>
+                    <a href="https://youtube.com/@smkdiponegorocipari" class="contact-card" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                        <span>SMK Diponegoro Cipari</span>
+                    </a>
+                    <div class="contact-card">
+                        <i class="fas fa-phone"></i>
+                        <span>(0281) 1234567</span>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jl. Raya Cipari No.123, Cipari, Cilacap</span>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-globe"></i>
+                        <span>www.smkdiponegorocipari.sch.id</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- HALAMAN KELAS -->
@@ -205,33 +319,38 @@
 
         <!-- HALAMAN FORUM -->
         <section id="forum-page" class="page">
-            <div class="forum-header">
-                <h2><i class="fas fa-comments"></i> Forum Diskusi Alumni</h2>
-                <div class="user-info">
-                    <span id="current-user-name"></span>
-                    <i class="fas fa-circle online-dot"></i>
-                </div>
-            </div>
-
-            <div class="chat-container">
-                <div class="chat-messages" id="forum-messages">
-                    <!-- Pesan akan dimuat di sini -->
-                </div>
-                
-                <div class="reply-preview" id="reply-preview" style="display: none;">
-                    <div class="reply-content">
-                        <strong>Membalas:</strong> <span id="reply-text"></span>
+            <div class="forum-fullscreen">
+                <div class="forum-header">
+                    <button class="back-btn" onclick="showPage('home')">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </button>
+                    <h2><i class="fas fa-comments"></i> Forum Diskusi Alumni</h2>
+                    <div class="user-info">
+                        <span id="current-user-name"></span>
+                        <i class="fas fa-circle online-dot"></i>
                     </div>
-                    <button class="cancel-reply" onclick="cancelReply()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
-                
-                <div class="chat-controls">
-                    <input type="text" id="message-input" class="chat-input" placeholder="Tulis pesan..." onkeypress="handleMessageKey(event)">
-                    <button class="send-btn" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i> Kirim
-                    </button>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="forum-messages">
+                        <!-- Pesan akan dimuat di sini -->
+                    </div>
+                    
+                    <div class="reply-preview" id="reply-preview" style="display: none;">
+                        <div class="reply-content">
+                            <strong>Membalas:</strong> <span id="reply-text"></span>
+                        </div>
+                        <button class="cancel-reply" onclick="cancelReply()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="chat-controls">
+                        <input type="text" id="message-input" class="chat-input" placeholder="Tulis pesan..." onkeypress="handleMessageKey(event)">
+                        <button class="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i> Kirim
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -249,6 +368,59 @@
                 <!-- Konten akan dimuat berdasarkan kelas -->
             </div>
         </section>
+
+        <!-- PROFILE SISWA MODAL -->
+        <div id="student-profile-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeStudentProfile()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2 id="profile-name"></h2>
+                    <p class="profile-class" id="profile-class"></p>
+                </div>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <i class="fas fa-quote-left"></i>
+                        <div>
+                            <h4>Motto Hidup</h4>
+                            <p id="profile-motto"></p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h4>Riwayat Pendidikan</h4>
+                            <p id="profile-education"></p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-briefcase"></i>
+                        <div>
+                            <h4>Pekerjaan Saat Ini</h4>
+                            <p id="profile-job"></p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Kontak</h4>
+                            <p id="profile-contact"></p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <h4>Prestasi</h4>
+                            <p id="profile-achievements"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- LOADING OVERLAY -->
         <div id="loading-overlay" class="loading-overlay">
