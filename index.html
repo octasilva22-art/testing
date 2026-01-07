@@ -28,14 +28,14 @@
                 <i class="fas fa-users"></i>
                 <span>Kelas</span>
             </button>
+            <button class="nav-btn" data-page="forum">
+                        <i class="fas fa-comments"></i>
+                        <span>Forum</span>
             <div class="nav-dropdown" id="user-menu" style="display:none;">
                 <button class="nav-btn dropdown-toggle">
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <button class="nav-btn" data-page="forum">
-                        <i class="fas fa-comments"></i>
-                        <span>Forum</span>
                     </button>
                     <button class="nav-btn" data-page="logout">
                         <i class="fas fa-sign-out-alt"></i>
@@ -81,17 +81,17 @@
 
             <!-- INFO SEKOLAH -->
             <div class="school-info-section">
-                <h2><i class="fas fa-school"></i> Tentang Sekolah</h2>
+                <h2><i class="fas fa-school"></i> Tentang Alumni</h2>
                 <div class="info-cards">
                     <div class="info-card">
                         <i class="fas fa-history"></i>
                         <h3>Sejarah</h3>
-                        <p>SMK Diponegoro Cipari berdiri sejak 1985 dengan visi mencetak lulusan yang kompeten dan berkarakter.</p>
+                        <p>Angkatan yang menjadi kelinci ujicoba leh sekolahnya sendiri</p>
                     </div>
                     <div class="info-card">
                         <i class="fas fa-trophy"></i>
                         <h3>Prestasi</h3>
-                        <p>Juara Lomba Kompetensi Siswa tingkat provinsi dan nasional bidang IT dan Akuntansi.</p>
+                        <p>-</p>
                     </div>
                     <div class="info-card">
                         <i class="fas fa-users"></i>
@@ -107,35 +107,35 @@
                 <div class="event-cards">
                     <div class="event-card">
                         <div class="event-date">
-                            <span class="day">25</span>
-                            <span class="month">Des</span>
+                            <span class="day">3</span>
+                            <span class="month">May</span>
                         </div>
                         <div class="event-info">
                             <h3>Wisuda Angkatan XII</h3>
                             <p><i class="fas fa-clock"></i> 08:00 - Selesai</p>
-                            <p><i class="fas fa-map-marker-alt"></i> Aula Sekolah</p>
+                            <p><i class="fas fa-map-marker-alt"></i> SMK Diponegoro cipari</p>
                         </div>
                     </div>
                     <div class="event-card">
                         <div class="event-date">
-                            <span class="day">15</span>
-                            <span class="month">Jan</span>
+                            <span class="day">-</span>
+                            <span class="month">-</span>
                         </div>
                         <div class="event-info">
                             <h3>Reuni Alumni</h3>
-                            <p><i class="fas fa-clock"></i> 10:00 - 15:00</p>
-                            <p><i class="fas fa-map-marker-alt"></i> Gedung Serbaguna</p>
+                            <p><i class="fas fa-clock"></i> -</p>
+                            <p><i class="fas fa-map-marker-alt"></i> -</p>
                         </div>
                     </div>
                     <div class="event-card">
                         <div class="event-date">
-                            <span class="day">20</span>
-                            <span class="month">Jan</span>
+                            <span class="day">-</span>
+                            <span class="month">-</span>
                         </div>
                         <div class="event-info">
                             <h3>Workshop Kewirausahaan</h3>
-                            <p><i class="fas fa-clock"></i> 13:00 - 16:00</p>
-                            <p><i class="fas fa-map-marker-alt"></i> Lab. Komputer</p>
+                            <p><i class="fas fa-clock"></i> -</p>
+                            <p><i class="fas fa-map-marker-alt"></i> -</p>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
 
             <!-- KONTAK -->
             <div class="contact-section">
-                <h2><i class="fas fa-address-book"></i> Hubungi Kami</h2>
+                <h2><i class="fas fa-address-book"></i> Contact </h2>
                 <div class="contact-cards">
                     <a href="https://instagram.com/smkdiponegorocipari" class="contact-card" target="_blank">
                         <i class="fab fa-instagram"></i>
@@ -197,6 +197,18 @@
             </div>
             
             <div class="classes-container">
+                
+                <div class="class-card" data-class="guru">
+                    <div class="class-image" style="background-image: url('paraguru.jpg'); background-size: cover;background-position:center ;">
+                    </div>
+                    <div class="class-info">
+                        <h3>Daftar Guru</h3>
+                        <p>Staf pengajar dan pendidik</p>
+                        <button class="class-btn" onclick="openClassDetail('guru')">
+                            <i class="fas fa-external-link-alt"></i> Lihat Detail
+                        </button>
+                    </div>
+                </div>
                 <div class="class-card" data-class="tjkt1">
                     <div class="class-image" style="background-image: url('TJKT1.jpg'); background-size: cover;background-position:center ;">
                     </div>
@@ -233,17 +245,6 @@
                     </div>
                 </div>
 
-                <div class="class-card" data-class="guru">
-                    <div class="class-image" style="background-image: url('paraguru.jpg'); background-size: cover;background-position:center ;">
-                    </div>
-                    <div class="class-info">
-                        <h3>Daftar Guru</h3>
-                        <p>Staf pengajar dan pendidik</p>
-                        <button class="class-btn" onclick="openClassDetail('guru')">
-                            <i class="fas fa-external-link-alt"></i> Lihat Detail
-                        </button>
-                    </div>
-                </div>
             </div>
         </section>
 
