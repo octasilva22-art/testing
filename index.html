@@ -7,6 +7,42 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tambahkan di head atau sebelum </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script>
+// Test EmailJS connection
+function testEmailJSConnection() {
+    console.log('Testing EmailJS connection...');
+    
+    if (typeof emailjs === 'undefined') {
+        console.error('EmailJS SDK not loaded');
+        return false;
+    }
+    
+    try {
+        // Ganti dengan konfigurasi Anda
+        const testConfig = {
+            serviceID: 'service_hm182xb',
+            templateID: 'template_s08qst7',
+            userID: 'll_WyigdiTmFDw71l'
+        };
+        
+        emailjs.init(testConfig.userID);
+        console.log('EmailJS initialized successfully');
+        return true;
+    } catch (error) {
+        console.error('EmailJS initialization error:', error);
+        return false;
+    }
+}
+
+// Test saat halaman load
+document.addEventListener('DOMContentLoaded', function() {
+    // Test setelah 2 detik
+    setTimeout(testEmailJSConnection, 2000);
+});
+</script>
 </head>
 <body>
     <!-- HEADER -->
@@ -450,5 +486,127 @@
     <script src="app.js"></script>
     <script src="data.js"></script>
     <script src="firebase-config.js"></script>
+    <!-- Tambahkan di bagian paling bawah sebelum </body> -->
+<script>
+// Handle email verification dari URL
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const verificationToken = urlParams.get('verify');
+    
+    if (verificationToken) {
+        // Redirect ke halaman login dan jalankan verifikasi
+        showPage('login');
+        setTimeout(() => {
+            verifyEmail(verificationToken);
+        }, 500);
+        
+        // Hapus token dari URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // Handle reset password dari URL
+    const resetToken = urlParams.get('reset');
+    if (resetToken) {
+        showPage('login');
+        showResetPasswordForm(resetToken);
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+
+// Fungsi untuk menampilkan form reset password
+function showResetPasswordForm(token) {
+    document.getElementById('login-page').innerHTML = `
+        <div class="auth-container">
+            <div class="auth-form active">
+                <h2><i class="fas fa-key"></i> Reset Password</h2>
+                <div class="form-group">
+                    <input type="password" id="new-password" placeholder="Password Baru" class="form-input">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirm-password" placeholder="Konfirmasi Password" class="form-input">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <button class="auth-btn" onclick="resetPasswordWithToken('${token}')">
+                    <i class="fas fa-save"></i> Simpan Password Baru
+                </button>
+                <p class="auth-switch">
+                    <a href="#" onclick="showLogin()">Kembali ke Login</a>
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+// Fungsi reset password dengan token
+function resetPasswordWithToken(token) {
+    const newPassword = document.getElementById('new-password').value.trim();
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+    
+    if (!newPassword || !confirmPassword) {
+        showNotification('Password baru dan konfirmasi harus diisi!', 'warning');
+        return;
+    }
+    
+    if (newPassword.length < 6) {
+        showNotification('Password minimal 6 karakter!', 'error');
+        return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+        showNotification('Password tidak cocok!', 'error');
+        return;
+    }
+    
+    showLoading(true);
+    
+    if (firebaseInitialized) {
+        // Cari user dengan reset token yang valid
+        database.ref('users').orderByChild('resetToken').equalTo(token).once('value', snapshot => {
+            const users = snapshot.val();
+            if (users) {
+                const userId = Object.keys(users)[0];
+                const user = users[userId];
+                
+                // Cek apakah token masih valid (kurang dari 1 jam)
+                const tokenExpires = user.resetTokenExpires || 0;
+                if (Date.now() > tokenExpires) {
+                    showLoading(false);
+                    showNotification('Token reset password sudah kadaluarsa!', 'error');
+                    showLogin();
+                    return;
+                }
+                
+                // Update password
+                database.ref(`users/${userId}`).update({
+                    password: newPassword,
+                    resetToken: null,
+                    resetTokenExpires: null
+                }, error => {
+                    showLoading(false);
+                    
+                    if (!error) {
+                        showNotification('Password berhasil direset! Silakan login dengan password baru.', 'success');
+                        showLogin();
+                    } else {
+                        showNotification('Gagal mereset password!', 'error');
+                    }
+                });
+            } else {
+                showLoading(false);
+                showNotification('Token reset password tidak valid!', 'error');
+                showLogin();
+            }
+        });
+    } else {
+        showLoading(false);
+        showNotification('Reset password berhasil (demo mode)!', 'success');
+        showLogin();
+    }
+}
+</script>
+<!-- Di index.html sebelum </body> -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="email-config.js"></script>
 </body>
 </html>
