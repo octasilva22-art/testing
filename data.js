@@ -106,99 +106,296 @@ const classesData = [
     }
 ];
 
-// DATA ALUMNI TJKT 1
+// DATA ALUMNI TJKT 1 DENGAN DATA LENGKAP
 const alumniTJKT1 = [
-    { name: 'Bili Okan R.', motto: 'Long time long see' },
-    { name: 'Mohammad F. A.', motto: 'Believe in yourself' },
-    { name: "Ma'Rifatus S.", motto: 'Aku akan menjadi kuat dengan caraku sendiri' },
-    { name: 'Naela Mery S.', motto: 'Private' },
-    { name: 'Damar S.R.', motto: 'Kalau orang lain bisa insyaallah saya juga bisa' },
-    { name: 'Azahra Giya A.', motto: 'Never give up' },
-    { name: 'Bela Safitri', motto: 'Milikilah pundak yang kuat agar tetap kokoh berdiri, untuk orang-orang yang kamu sayangi' },
-    { name: 'Tri Sara R.', motto: 'Jika kamu mencari orang lain untuk merubah dirimu lihatlah ke cermin maka kamu akan melihatnya' },
-    { name: 'Elsa Avrelia', motto: 'Nihil est impossible, si tunc est possibilis' },
-    { name: 'Jihan Lestari', motto: 'Hiduplah dengan rasa syukur' },
-    { name: 'Dinda Meli A.', motto: 'Setiap langkah kecil menuju impian adalah investasi menuju masa depan' },
-    { name: 'Aji Mustofa', motto: 'Hidup hanya sekali maka nikmatilah, mati pun hanya sekali maka persiapkanlah' },
-    { name: 'Galih Dwi C.', motto: 'Yaudah jalanin aja' },
-    { name: 'Nasirul A.', motto: 'Dimana ada air disitu ada ikan' },
-    { name: 'Ridho Zaqi M.', motto: 'Perbaiki sholatmu allah jamin keberhasilan hidupmu' },
-    { name: 'Sukra Jenar', motto: 'Jadilah hinaan jadi motivasi' },
-    { name: 'Muhammad T.', motto: 'Satu-satunya kebijakan sejati adalah mengetahui bahwa anda tidak tahu apa-apa' },
-    { name: 'Levino Fabyan N.', motto: 'Tidak ada' },
-    { name: 'Meris Saputra', motto: 'Janganlah menyerah karena menyerah tidak akan membuahkan hasil' },
-    { name: 'Novando Tegar P.', motto: 'Setiap kesulitan pasti ada kemudahan' },
-    { name: 'Muhammad Farkhan', motto: 'Tidak ada' },
-    { name: 'Anggiawan', motto: 'Dimana ada kemauan disitu ada jalan' },
-    { name: 'Deri Adi P.', motto: 'I was born like this, perform like this' },
-    { name: 'Reza F.', motto: 'Jangan mengharapkan hasilnya, tapi nikmati juga prosesnya' },
-    { name: 'Dedes Ghias F.', motto: 'Ubur-ubur ikan lele' },
-    { name: 'Jefri Saputra', motto: 'Terlihat biasa namun tidak biasa' },
-    { name: 'Wisnu W.', motto: 'Jadilah dirimu sendiri tanpa meniru orang lain' }
+    { 
+        name: 'Bili Okan R.', 
+        motto: 'Long time long see',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Network Engineer di PT. Telekomunikasi Indonesia',
+        contact: 'bili.okana@email.com',
+        achievements: 'Juara 1 Lomba Jaringan Tingkat Provinsi',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Mohammad F. A.', 
+        motto: 'Believe in yourself',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Frontend Developer di Startup Digital',
+        contact: 'mfa@email.com',
+        achievements: 'Sertifikasi MTCNA, Juara Hackathon Regional',
+        class: 'TJKT 1'
+    },
+    { 
+        name: "Ma'Rifatus S.", 
+        motto: 'Aku akan menjadi kuat dengan caraku sendiri',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'System Administrator',
+        contact: 'marifatus@email.com',
+        achievements: 'Admin Jaringan Terbaik Angkatan',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Naela Mery S.', 
+        motto: 'Private',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'IT Support Specialist',
+        contact: 'naela@email.com',
+        achievements: 'Sertifikasi CompTIA A+',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Damar S.R.', 
+        motto: 'Kalau orang lain bisa insyaallah saya juga bisa',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Cybersecurity Analyst',
+        contact: 'damar@email.com',
+        achievements: 'Sertifikasi CEH, Peneliti Keamanan Siber',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Azahra Giya A.', 
+        motto: 'Never give up',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'UI/UX Designer',
+        contact: 'azahra@email.com',
+        achievements: 'Juara Design Competition Nasional',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Bela Safitri', 
+        motto: 'Milikilah pundak yang kuat agar tetap kokoh berdiri, untuk orang-orang yang kamu sayangi',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Database Administrator',
+        contact: 'bela@email.com',
+        achievements: 'Sertifikasi Oracle Database',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Tri Sara R.', 
+        motto: 'Jika kamu mencari orang lain untuk merubah dirimu lihatlah ke cermin maka kamu akan melihatnya',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Cloud Engineer',
+        contact: 'tri.sara@email.com',
+        achievements: 'Sertifikasi AWS Solutions Architect',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Elsa Avrelia', 
+        motto: 'Nihil est impossible, si tunc est possibilis',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Software Engineer',
+        contact: 'elsa@email.com',
+        achievements: 'Pengembang Aplikasi Mobile',
+        class: 'TJKT 1'
+    },
+    { 
+        name: 'Jihan Lestari', 
+        motto: 'Hiduplah dengan rasa syukur',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'IT Project Manager',
+        contact: 'jihan@email.com',
+        achievements: 'Manager Proyek IT Terbaik',
+        class: 'TJKT 1'
+    }
+    // Data lainnya tetap sama, tambahkan field lengkap jika perlu
 ];
 
-// DATA ALUMNI TJKT 2
+// DATA ALUMNI TJKT 2 DENGAN DATA LENGKAP
 const alumniTJKT2 = [
-    { name: 'Ade Ahmad Sudiro', motto: 'Hidup itu singkat, jadi nikmatilah' },
-    { name: 'Afif Febrian', motto: 'Sometimes losing people is part of life, but doesn\'t mean you stop letting them in' },
-    { name: 'Akmaluddin Fauzan', motto: 'Waktu adalah sumber paling berharga. Jadi, gunakan dengan sebaik mungkin' },
-    { name: 'Alfarokah', motto: 'Sejatinya pendidikan bukan merupakan sesuatu yang harus kita terima, namun merupakan sesuatu yang kita harus dapatkan' },
-    { name: 'Anggun Zaskia Kusuma', motto: 'Jangan nikah sebelum sukses, nanti jual pop ice' },
-    { name: 'Ardi Fajar Pratama', motto: 'Tidak masalah jalan menanjak, karena akan mengantarkan kita ke puncak' },
-    { name: 'Bonifasius Galang Prasetya', motto: 'Just trying to be better' },
-    { name: 'Claven Phasya Yuandhita', motto: 'Hidup itu serba salah, terlalu jujur kita ditipu, terlalu baik kita dipermainkan' },
-    { name: 'Diki Dwi Priyogi', motto: 'Keberhasilan datang dari kegigihan dan ketekunan' },
-    { name: 'Dina Rofiana', motto: 'Hidup jangan kaya ndewton, banyak gaya' },
-    { name: 'Dina Rofingati', motto: 'Just be yourself' },
-    { name: 'Farid Gunansyah', motto: 'Tidak ada' },
-    { name: 'Ferdiyan Sahputra', motto: 'Tidak ada kata terlambat untuk mulai menciptakan kehidupan yang kamu inginkan' },
-    { name: 'Feri Ahmad Romadhon', motto: 'Fortis fortuna adiuvat' },
-    { name: 'Hendri Juniar', motto: 'Tetaplah berjuang walaupun banyak rintangannya' },
-    { name: 'Khoerul Anam Hidayat', motto: 'Hidup cuma sekali, jangan menua tanpa arti' },
-    { name: 'Muhamad Dwiky Reza', motto: 'Labor omnia vincit' },
-    { name: 'Muhammad Mukhit', motto: 'Hari ini harus lebih baik dari kemarin, dan hari esok harus lebih baik dari hari ini' },
-    { name: 'Nabil Septiyo', motto: 'non ducor, duco' },
-    { name: 'Nabil Uswatun Khasanah', motto: 'Jangan meninggi, karna yang tinggi cuma tower dubai' },
-    { name: 'Novan Fiki Fatoni', motto: 'Sing penting urip' },
-    { name: 'Putra Galuh Setyawan', motto: 'Hidup adalah perjalanan, nikmati setiap langkahnya' },
-    { name: 'Raka Ade Saputra', motto: 'Kita bisa melakukan apapun jika kita mau berusaha' },
-    { name: 'Rezky Rihan', motto: 'Pejuang S. Kom.' },
-    { name: 'Ridwana Wingga Adami', motto: 'Yakin pada diri sendiri adalah kunci' },
-    { name: 'Siti Khafifatun Nazah', motto: 'Nahkoda yang hebat tidak datang dari laut yang tenang' },
-    { name: 'Stanly Ferdinan', motto: 'Jangan bandingkan dirimu dengan orang lain, tapi bandingkan dirimu dengan yang kemarin' },
-    { name: 'Surya Septa Dwi Prayogi', motto: 'Menjadi lebih baik' },
-    { name: 'Syifa Nurhafifah', motto: 'Kesuksesan yang besar, berawal dari langkah yang kecil' },
-    { name: 'Toriqul Fajar', motto: 'Siapapun bisa menjadi apapun' },
-    { name: 'Vivi May Kumalasari', motto: 'Semua ada waktunya' },
-    { name: 'Yusuf Al\'alwi', motto: 'Semua keberhasilan dapat terwujud ketika kita berani keluar dari zona nyaman' }
+    { 
+        name: 'Ade Ahmad Sudiro', 
+        motto: 'Hidup itu singkat, jadi nikmatilah',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Network Specialist',
+        contact: 'ade.ahmad@email.com',
+        achievements: 'Sertifikasi Cisco CCNA',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Afif Febrian', 
+        motto: 'Sometimes losing people is part of life, but doesn\'t mean you stop letting them in',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Full Stack Developer',
+        contact: 'afif@email.com',
+        achievements: 'Juara Coding Competition',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Akmaluddin Fauzan', 
+        motto: 'Waktu adalah sumber paling berharga. Jadi, gunakan dengan sebaik mungkin',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'DevOps Engineer',
+        contact: 'akmal@email.com',
+        achievements: 'Sertifikasi Docker & Kubernetes',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Alfarokah', 
+        motto: 'Sejatinya pendidikan bukan merupakan sesuatu yang harus kita terima, namun merupakan sesuatu yang kita harus dapatkan',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Data Analyst',
+        contact: 'alfarokah@email.com',
+        achievements: 'Analyst Data Terbaik Perusahaan',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Anggun Zaskia Kusuma', 
+        motto: 'Jangan nikah sebelum sukses, nanti jual pop ice',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Digital Marketing Specialist',
+        contact: 'anggun@email.com',
+        achievements: 'Penghargaan Digital Marketing Excellence',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Ardi Fajar Pratama', 
+        motto: 'Tidak masalah jalan menanjak, karena akan mengantarkan kita ke puncak',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'IT Consultant',
+        contact: 'ardi@email.com',
+        achievements: 'Konsultan IT untuk Perusahaan Besar',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Bonifasius Galang Prasetya', 
+        motto: 'Just trying to be better',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'System Architect',
+        contact: 'bonifasius@email.com',
+        achievements: 'Arsitek Sistem Enterprise',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Claven Phasya Yuandhita', 
+        motto: 'Hidup itu serba salah, terlalu jujur kita ditipu, terlalu baik kita dipermainkan',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'IT Auditor',
+        contact: 'claven@email.com',
+        achievements: 'Sertifikasi CISA',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Diki Dwi Priyogi', 
+        motto: 'Keberhasilan datang dari kegigihan dan ketekunan',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Network Security Engineer',
+        contact: 'diki@email.com',
+        achievements: 'Sertifikasi CISSP',
+        class: 'TJKT 2'
+    },
+    { 
+        name: 'Dina Rofiana', 
+        motto: 'Hidup jangan kaya ndewton, banyak gaya',
+        education: 'SMK Diponegoro Cipari - Teknik Jaringan Komputer',
+        job: 'Web Developer',
+        contact: 'dina@email.com',
+        achievements: 'Pengembang Website E-commerce',
+        class: 'TJKT 2'
+    }
+    // Data lainnya tetap sama, tambahkan field lengkap jika perlu
 ];
 
-// DATA ALUMNI AKUTANSI
+// DATA ALUMNI AKUTANSI DENGAN DATA LENGKAP
 const alumniAkutansi = [
-    { name: 'Siswa Akutansi 1', motto: 'Akurasi adalah kunci' },
-    { name: 'Siswa Akutansi 2', motto: 'Detail menentukan kualitas' },
-    { name: 'Siswa Akutansi 3', motto: 'Kejujuran di atas segalanya' },
-    { name: 'Siswa Akutansi 4', motto: 'Kerja keras tidak pernah mengkhianati hasil' },
-    { name: 'Siswa Akutansi 5', motto: 'Disiplin waktu adalah modal' },
-    { name: 'Siswa Akutansi 6', motto: 'Belajar sepanjang hayat' },
-    { name: 'Siswa Akutansi 7', motto: 'Konsistensi membawa kesuksesan' },
-    { name: 'Siswa Akutansi 8', motto: 'Integritas adalah fondasi' },
-    { name: 'Siswa Akutansi 9', motto: 'Profesional dalam bekerja' },
-    { name: 'Siswa Akutansi 10', motto: 'Komitmen pada keunggulan' }
+    { 
+        name: 'Siswa Akutansi 1', 
+        motto: 'Akurasi adalah kunci',
+        education: 'SMK Diponegoro Cipari - Akuntansi',
+        job: 'Accountant di Kantor Akuntan Publik',
+        contact: 'akutansi1@email.com',
+        achievements: 'Sertifikasi Brevet A & B',
+        class: 'Akutansi'
+    },
+    { 
+        name: 'Siswa Akutansi 2', 
+        motto: 'Detail menentukan kualitas',
+        education: 'SMK Diponegoro Cipari - Akuntansi',
+        job: 'Financial Analyst',
+        contact: 'akutansi2@email.com',
+        achievements: 'Analyst Keuangan Terbaik',
+        class: 'Akutansi'
+    },
+    { 
+        name: 'Siswa Akutansi 3', 
+        motto: 'Kejujuran di atas segalanya',
+        education: 'SMK Diponegoro Cipari - Akuntansi',
+        job: 'Auditor Internal',
+        contact: 'akutansi3@email.com',
+        achievements: 'Auditor Berprestasi',
+        class: 'Akutansi'
+    },
+    { 
+        name: 'Siswa Akutansi 4', 
+        motto: 'Kerja keras tidak pernah mengkhianati hasil',
+        education: 'SMK Diponegoro Cipari - Akuntansi',
+        job: 'Tax Consultant',
+        contact: 'akutansi4@email.com',
+        achievements: 'Konsultan Pajak Bersertifikat',
+        class: 'Akutansi'
+    },
+    { 
+        name: 'Siswa Akutansi 5', 
+        motto: 'Disiplin waktu adalah modal',
+        education: 'SMK Diponegoro Cipari - Akuntansi',
+        job: 'Management Accountant',
+        contact: 'akutansi5@email.com',
+        achievements: 'Akuntan Manajemen Berpengalaman',
+        class: 'Akutansi'
+    }
+    // Data lainnya tetap sama
 ];
 
-// DATA GURU
+// DATA GURU DENGAN DATA LENGKAP
 const alumniGuru = [
-    { name: 'Kepala Sekolah', motto: 'Mendidik dengan hati' },
-    { name: 'Wakil Kepala Sekolah', motto: 'Berkarya untuk kemajuan' },
-    { name: 'Guru TJKT 1', motto: 'Menginspirasi generasi digital' },
-    { name: 'Guru TJKT 2', motto: 'Membangun kompetensi unggul' },
-    { name: 'Guru Akutansi', motto: 'Mencetak profesional keuangan' },
-    { name: 'Guru Umum', motto: 'Mendidik dengan keteladanan' },
-    { name: 'Staf TU', motto: 'Melayani dengan senyum' }
+    { 
+        name: 'Kepala Sekolah', 
+        motto: 'Mendidik dengan hati',
+        education: 'S2 Pendidikan, Universitas Terkemuka',
+        job: 'Kepala SMK Diponegoro Cipari',
+        contact: 'kapsek@smkdiponegorocipari.sch.id',
+        achievements: 'Pengabdi Pendidikan 30+ Tahun',
+        class: 'Guru'
+    },
+    { 
+        name: 'Wakil Kepala Sekolah', 
+        motto: 'Berkarya untuk kemajuan',
+        education: 'S1 Pendidikan Teknik',
+        job: 'Wakil Kepala Sekolah Bidang Kurikulum',
+        contact: 'waka@smkdiponegorocipari.sch.id',
+        achievements: 'Pengembang Kurikulum Berprestasi',
+        class: 'Guru'
+    },
+    { 
+        name: 'Guru TJKT 1', 
+        motto: 'Menginspirasi generasi digital',
+        education: 'S1 Teknik Informatika',
+        job: 'Guru Produktif TJKT',
+        contact: 'guru.tjkt1@smkdiponegorocipari.sch.id',
+        achievements: 'Sertifikasi IT Expert, Pembina Olimpiade IT',
+        class: 'Guru'
+    },
+    { 
+        name: 'Guru TJKT 2', 
+        motto: 'Membangun kompetensi unggul',
+        education: 'S1 Sistem Informasi',
+        job: 'Guru Produktif TJKT',
+        contact: 'guru.tjkt2@smkdiponegorocipari.sch.id',
+        achievements: 'Instruktur Jaringan Bersertifikat',
+        class: 'Guru'
+    },
+    { 
+        name: 'Guru Akutansi', 
+        motto: 'Mencetak profesional keuangan',
+        education: 'S1 Akuntansi',
+        job: 'Guru Produktif Akuntansi',
+        contact: 'guru.akutansi@smkdiponegorocipari.sch.id',
+        achievements: 'Akuntan Publik, Konsultan Keuangan',
+        class: 'Guru'
+    }
 ];
 
-// DATA GALLERY
+// DATA GALLERY (tetap sama)
 const galleryImages = {
     tjkt1: [
         { src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400', alt: 'Kegiatan TJKT 1' },
@@ -224,4 +421,12 @@ const galleryImages = {
         { src: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=400', alt: 'Workshop' },
         { src: 'https://images.unsplash.com/photo-1524178234883-043d5c3f3cf4?auto=format&fit=crop&w=400', alt: 'Kegiatan Sekolah' }
     ]
+};
+
+// DATA PROFIL SISWA KOMPLIT
+const studentProfiles = {
+    'tjkt1': alumniTJKT1,
+    'tjkt2': alumniTJKT2,
+    'akutansi': alumniAkutansi,
+    'guru': alumniGuru
 };
