@@ -4,6 +4,7 @@ let currentPage = 'home';
 let currentClass = null;
 let replyingTo = null;
 let firebaseInitialized = false;
+let currentStudentProfile = null;
 
 // INISIALISASI APLIKASI
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,7 +20,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Firebase
     initializeFirebase();
+    
+    // Setup klik di luar dropdown
+    document.addEventListener('click', closeDropdowns);
 });
+
+// Setup close dropdown saat klik di luar
+function closeDropdowns(event) {
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
+    const userMenu = document.getElementById('user-menu');
+    
+    if (userMenu && !userMenu.contains(event.target)) {
+        dropdowns.forEach(dropdown => {
+            if (dropdown.style.display === 'flex') {
+                dropdown.style.display = 'none';
+            }
+        });
+    }
+}
 
 // SETUP NAVIGASI
 function setupNavigation() {
@@ -42,6 +60,16 @@ function setupNavigation() {
             showPage(page);
         });
     });
+    
+    // Setup dropdown toggle
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    if (dropdownToggle) {
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = this.parentElement.querySelector('.dropdown-menu');
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        });
+    }
 }
 
 // SETUP FORM AUTH
@@ -103,6 +131,10 @@ function showPage(pageName) {
                 break;
             case 'classes':
                 break;
+            case 'home':
+                // Tutup forum fullscreen jika ada
+                document.querySelector('.forum-fullscreen')?.classList.remove('active');
+                break;
         }
         
         // Scroll to top
@@ -121,9 +153,9 @@ function goBack() {
     }
 }
 
-// LOAD KELAS PREVIEW
+// LOAD KELAS PREVIEW DI HOME
 function loadClassesPreview() {
-    const container = document.getElementById('classes-preview');
+    const container = document.querySelector('#home-page .classes-container');
     if (!container) return;
     
     const classCards = classesData.slice(0, 3).map(cls => `
@@ -141,7 +173,7 @@ function loadClassesPreview() {
         </div>
     `).join('');
     
-    container.innerHTML += `<div class="classes-container">${classCards}</div>`;
+    container.innerHTML = classCards;
 }
 
 // BUKA DETAIL KELAS
@@ -231,38 +263,49 @@ function setupClassTabs() {
     });
 }
 
-// LOAD DATA ALUMNI
+// LOAD DATA ALUMNI dengan click event untuk profile
 function loadAlumniData(classId) {
     const alumniList = document.getElementById('alumni-list');
     if (!alumniList) return;
     
-    let alumniData = [];
+    let alumniData = studentProfiles[classId] || [];
     
-    switch(classId) {
-        case 'tjkt1':
-            alumniData = alumniTJKT1;
-            break;
-        case 'tjkt2':
-            alumniData = alumniTJKT2;
-            break;
-        case 'akutansi':
-            alumniData = alumniAkutansi;
-            break;
-        case 'guru':
-            alumniData = alumniGuru;
-            break;
-    }
-    
-    alumniList.innerHTML = alumniData.map(alumni => `
-        <div class="alumni-card">
+    alumniList.innerHTML = alumniData.map((alumni, index) => `
+        <div class="alumni-card" onclick="showStudentProfile('${classId}', ${index})">
             <div class="alumni-avatar">
                 <i class="fas fa-user"></i>
             </div>
             <h4 class="alumni-name">${alumni.name}</h4>
-            <p class="alumni-motto">${alumni.motto}</p>
+            <p class="alumni-motto">"${alumni.motto}"</p>
             ${alumni.current ? `<p class="alumni-current"><small>${alumni.current}</small></p>` : ''}
         </div>
     `).join('');
+}
+
+// TAMPILKAN PROFILE SISWA
+function showStudentProfile(classId, index) {
+    const alumniData = studentProfiles[classId];
+    if (!alumniData || !alumniData[index]) return;
+    
+    const alumni = alumniData[index];
+    currentStudentProfile = alumni;
+    
+    // Update modal content
+    document.getElementById('profile-name').textContent = alumni.name;
+    document.getElementById('profile-class').textContent = alumni.class;
+    document.getElementById('profile-motto').textContent = alumni.motto;
+    document.getElementById('profile-education').textContent = alumni.education || 'SMK Diponegoro Cipari';
+    document.getElementById('profile-job').textContent = alumni.job || 'Belum bekerja';
+    document.getElementById('profile-contact').textContent = alumni.contact || '-';
+    document.getElementById('profile-achievements').textContent = alumni.achievements || 'Belum ada prestasi tercatat';
+    
+    // Show modal
+    document.getElementById('student-profile-modal').classList.add('active');
+}
+
+function closeStudentProfile() {
+    document.getElementById('student-profile-modal').classList.remove('active');
+    currentStudentProfile = null;
 }
 
 // LOAD GALLERY DATA
@@ -279,7 +322,7 @@ function loadGalleryData(classId) {
     `).join('');
 }
 
-// AUTH FUNCTIONS
+// AUTH FUNCTIONS - TIDAK BERUBAH
 function login() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value.trim();
@@ -292,9 +335,8 @@ function login() {
     
     showLoading(true);
     
-    // Simulasi login (ganti dengan Firebase Authentication)
+    // Simulasi login
     setTimeout(() => {
-        // Cek di database users
         if (firebaseInitialized) {
             database.ref('users').orderByChild('email').equalTo(email).once('value', snapshot => {
                 showLoading(false);
@@ -404,18 +446,20 @@ function logout() {
 }
 
 function updateUserUI() {
-    const forumNav = document.getElementById('forum-nav');
-    const logoutNav = document.getElementById('logout-nav');
+    const userMenu = document.getElementById('user-menu');
+    const loginNav = document.getElementById('login-nav');
     
     if (currentUser) {
-        if (forumNav) forumNav.style.display = 'flex';
-        if (logoutNav) logoutNav.style.display = 'flex';
+        // Sembunyikan tombol login, tampilkan menu titik tiga
+        if (loginNav) loginNav.style.display = 'none';
+        if (userMenu) userMenu.style.display = 'block';
         
         const userName = document.getElementById('current-user-name');
         if (userName) userName.textContent = currentUser.name;
     } else {
-        if (forumNav) forumNav.style.display = 'none';
-        if (logoutNav) logoutNav.style.display = 'none';
+        // Sembunyikan menu titik tiga, tampilkan tombol login
+        if (userMenu) userMenu.style.display = 'none';
+        if (loginNav) loginNav.style.display = 'flex';
     }
 }
 
@@ -427,7 +471,7 @@ function checkRememberedUser() {
     }
 }
 
-// FORUM FUNCTIONS
+// FORUM FUNCTIONS - FULLSCREEN
 function loadForumMessages() {
     if (!firebaseInitialized || !currentUser) return;
     
@@ -574,7 +618,7 @@ function setupReply(messageId, senderName, message) {
     const text = document.getElementById('reply-text');
     
     if (preview && text) {
-        text.textContent = message;
+        text.textContent = message.length > 50 ? message.substring(0, 50) + '...' : message;
         preview.style.display = 'flex';
         document.getElementById('message-input').focus();
     }
@@ -641,6 +685,23 @@ function showRegister() {
 function showForgotPassword() {
     document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
     document.getElementById('forgot-form').classList.add('active');
+}
+
+function resetPassword() {
+    const email = document.getElementById('reset-email').value.trim();
+    
+    if (!email) {
+        showNotification('Email harus diisi!', 'warning');
+        return;
+    }
+    
+    showLoading(true);
+    
+    setTimeout(() => {
+        showLoading(false);
+        showNotification('Link reset password telah dikirim ke email Anda (demo mode)', 'success');
+        showLogin();
+    }, 1500);
 }
 
 function formatTime(timestamp) {
